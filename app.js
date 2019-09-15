@@ -48,7 +48,6 @@ function checkword(in_lang_out_lang, id, fieldname)
 		if(document.getElementById(fieldname).value == window.pl_words[window.order[window.correct + window.incorrect]][i])
 		{
 			console.log("Correct answer \"" + document.getElementById(fieldname).value + "\"");
-			window.correct++;
 			correct_answer = true;
 		}
 	}
@@ -69,6 +68,7 @@ function checkword(in_lang_out_lang, id, fieldname)
 	}
 	else
 	{
+		window.correct++;
 		update_content(in_lang_out_lang, id);
 	}
 }
@@ -120,9 +120,11 @@ function appmain(in_lang_out_lang, id)
 			var num = randomize(0, window.en_words.length - 1);
 			if(!find_in_array(window.order, num))
 			{
+				console.log("randomized number: " + num);
 				window.order.push(num);
 			}
 		}
+		console.log("window.order.length: " + window.order.length);
 		update_content(in_lang_out_lang, id);
 	}
 }

@@ -149,6 +149,7 @@ function parse_config_file(pth, id)
 						str += '\n';
 					}
 					console.log(str);
+					console.log("en_words: " + window.en_words.length + ", pl_words: " + window.pl_words.length);
 				}
 				document.getElementById(id).innerHTML = returnstr;
 			}
