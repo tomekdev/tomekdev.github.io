@@ -2,6 +2,8 @@ window.en_words = [];
 window.en_words.length = 0;
 window.pl_words = [];
 window.pl_words.length = 0;
+window.config_structure = [];
+window.config_structure_level = -1;
 
 function Load(path, id) {
 	var file = new XMLHttpRequest();
@@ -23,7 +25,7 @@ function Load(path, id) {
 	file.send(null);
 }
 
-function parse_config_file(pth, id)
+function parse_config_file(pth, id, go_back)
 {
 	document.getElementById(id).innerHTML = "Wczytywanie...";
 	var file = new XMLHttpRequest();
@@ -34,6 +36,16 @@ function parse_config_file(pth, id)
 		{
 			if(file.status == 200 || file.status == 0)
 			{
+				if(go_back == true)
+				{
+					console.log("Popping element \"" + window.config_structure[window.config_structure.length - 1] + "\"");
+					window.config_structure.pop();
+					window.config_structure.pop();
+					window.config_structure_level -= 2;
+				}
+				window.config_structure.push(pth);
+				window.config_structure_level++;
+				console.log("Pushed \"" + pth + "\" in position " + (window.config_structure.length - 1));
 				console.log("File: " + pth + " has status 200 or 4");
 				var loop_iterations = 0;
 				var i = 0;
@@ -90,7 +102,7 @@ function parse_config_file(pth, id)
 							returnstr += path;
 							returnstr += "\', \'";
 							returnstr += id;
-							returnstr += "\')\">";
+							returnstr += "\', false)\">";
 							returnstr += english_name;
 							returnstr += " [ ";
 							returnstr += polish_name;
@@ -157,6 +169,10 @@ function parse_config_file(pth, id)
 			{
 				document.getElementById(id).innerHTML = "Coś poszło nie tak (status " + file.status + ')';
 			}
+			if(window.config_structure.length > 1)
+			{
+				document.getElementById(id).innerHTML += "<br><button type=\"button\" onclick=\"parse_config_file(\'" + window.config_structure[window.config_structure_level - 1] + "\', \'" + id + "\', true)\">Wstecz</button><br>";
+			}
 		}
 	}
 	file.send(null);
@@ -164,7 +180,7 @@ function parse_config_file(pth, id)
 
 function InitialLoad()
 {
-	parse_config_file("data/config", "contents");
+	parse_config_file("data/config", "contents", false);
 }
 window.onload = InitialLoad();
 

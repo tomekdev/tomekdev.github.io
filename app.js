@@ -53,6 +53,8 @@ function update_content(in_lang_out_lang, id)
 	{
 		document.getElementById(id).innerHTML = "<font color=white face=\"Cantarell\" size=7>Twój wynik</font><br><font color=green size=5>" + window.correct + "</font><font color=white size=5> poprawnych, </font><font color=red size=5>" + window.incorrect + "</font><font color=white size=5> niepoprawnych na " + window.en_words.length + " możliwych (" + Math.round((window.correct / window.en_words.length * 100)) + " %).<br>";
 	}
+	/* Add "Back" button */
+	document.getElementById(id).innerHTML += "<br><button type=\"button\" onclick=\"parse_config_file(\'" + window.config_structure[window.config_structure_level - 1] + "\', \'" + id + "\', true)\">Wstecz</button><br>";
 }
 
 function checkword(in_lang_out_lang, id, fieldname)
