@@ -27,6 +27,13 @@ function Load(path, id) {
 
 function parse_config_file(pth, id, go_back)
 {
+	/* Reset globals */
+	for(var i = 0; i < window.pl_words.length; i++)
+	{
+		window.pl_words[i].length = 0;
+	}
+	window.pl_words.length = 0;
+	window.en_words.length = 0;
 	document.getElementById(id).innerHTML = "Wczytywanie...";
 	var file = new XMLHttpRequest();
 	file.open('GET', pth, false);

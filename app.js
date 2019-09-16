@@ -156,6 +156,7 @@ function appmain(in_lang_out_lang, id)
 		console.log("window.order.length: " + window.order.length);
 		update_content(in_lang_out_lang, id);
 		/* Add event listener for handling Enter kay presses */
+		/* Delete event listener, causes issues 
 		var inputhandle = document.getElementById(id);
 		inputhandle.addEventListener("keyup", function(event) {
 			if(event.keyCode === 13)
@@ -163,7 +164,7 @@ function appmain(in_lang_out_lang, id)
 				event.preventDefault();
 				document.getElementById("checkbutton").click();
 			}
-		});
+		}); */
 	}
 }
 
