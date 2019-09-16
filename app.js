@@ -51,7 +51,7 @@ function update_content(in_lang_out_lang, id)
 	}
 	else
 	{
-		document.getElementById(id).innerHTML = "<font color=white face=\"Cantarell\" size=7>Twój wynik</font><br><font color=green size=5>" + window.correct + "</font><font color=white size=5> poprawnych, </font><font color=red size=5>" + window.incorrect + "</font><font color=white size=5> niepoprawnych na " + window.en_words.length + " możliwych (" + (window.correct / window.en_words.length * 100) + " %).<br>";
+		document.getElementById(id).innerHTML = "<font color=white face=\"Cantarell\" size=7>Twój wynik</font><br><font color=green size=5>" + window.correct + "</font><font color=white size=5> poprawnych, </font><font color=red size=5>" + window.incorrect + "</font><font color=white size=5> niepoprawnych na " + window.en_words.length + " możliwych (" + Math.round((window.correct / window.en_words.length * 100)) + " %).<br>";
 	}
 }
 
