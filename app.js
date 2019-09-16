@@ -46,7 +46,7 @@ function update_content(in_lang_out_lang, id)
 			}
 			placeholder_str = "In english...";
 		}
-		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.en_words.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br>";
+		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.en_words.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button id=\"checkbutton\" type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br>";
 		console.log("number: " + window.order[window.correct + window.incorrect]);
 	}
 	else
@@ -153,6 +153,15 @@ function appmain(in_lang_out_lang, id)
 		}
 		console.log("window.order.length: " + window.order.length);
 		update_content(in_lang_out_lang, id);
+		/* Add event listener for handling Enter kay presses */
+		var inputhandle = document.getElementById(id);
+		inputhandle.addEventListener("keyup", function(event) {
+			if(event.keyCode === 13)
+			{
+				event.preventDefault();
+				document.getElementById("checkbutton").click();
+			}
+		});
 	}
 }
 
