@@ -3,7 +3,7 @@ Appearance/Wygląd zewnętrzny = data/wordlists/unit1/appearance/config
 Clothes/Ubrania = data/wordlists/unit1/clothes/config
 Features of character/Cechy charakteru = data/wordlists/unit1/character/config
 Feelings and emotions/Uczucia i emocje = data/wordlists/unit1/feelings/config
-Interests/Zainteresowania = data/worldlists/unit1/interests/config
+Interests/Zainteresowania = data/wordlists/unit1/interests/config
 Ethical problems/Problemy etyczne = data/wordlists/unit1/ethical/config
 Other/Inne = data/wordlists/unit1/other/config
 =====>/Z lekcji = data/wordlists/unit1/z_lekcji/config
