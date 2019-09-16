@@ -24,9 +24,29 @@ function btn_nullfunc()
 
 function update_content(in_lang_out_lang, id)
 {
+	console.log("in_lang_out_lang: " + in_lang_out_lang);
 	if(window.correct + window.incorrect < window.en_words.length)
 	{
-		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.en_words.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + window.en_words[window.order[window.correct + window.incorrect]] + "</font><br><input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"Po polsku...\" autofocus>\n<button type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br>";
+		var placeholder_str = "";
+		var word_str = "";
+		if(in_lang_out_lang == "en-pl")
+		{
+			placeholder_str = "Po polsku...";
+			word_str = window.en_words[window.order[window.correct + window.incorrect]];
+		}
+		else if(in_lang_out_lang == "pl-en")
+		{
+			for(var i = 0; i < window.pl_words[window.order[window.correct + window.incorrect]].length; i++)
+			{
+				word_str += window.pl_words[window.order[window.correct + window.incorrect]][i];
+				if(i < window.pl_words[window.order[window.correct + window.incorrect]].length - 1)
+				{
+					word_str += ", ";
+				}
+			}
+			placeholder_str = "In english...";
+		}
+		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.en_words.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br>";
 		console.log("number: " + window.order[window.correct + window.incorrect]);
 	}
 	else
@@ -42,10 +62,22 @@ function checkword(in_lang_out_lang, id, fieldname)
 	console.log("Got answer: |" + document.getElementById(fieldname).value + "|\n");
 	var str = "Possible answers: ";
 	var correct_answer = false;
-	for(var i = 0; i < window.pl_words[window.order[window.correct + window.incorrect]].length; i++)
+	if(in_lang_out_lang == "en-pl")
 	{
-		str += '|' + window.pl_words[window.order[window.correct + window.incorrect]][i] + "|, ";
-		if(document.getElementById(fieldname).value == window.pl_words[window.order[window.correct + window.incorrect]][i])
+		for(var i = 0; i < window.pl_words[window.order[window.correct + window.incorrect]].length; i++)
+		{
+			str += '|' + window.pl_words[window.order[window.correct + window.incorrect]][i] + "|, ";
+			if(document.getElementById(fieldname).value == window.pl_words[window.order[window.correct + window.incorrect]][i])
+			{
+				console.log("Correct answer \"" + document.getElementById(fieldname).value + "\"");
+				correct_answer = true;
+			}
+		}
+	}
+	else if(in_lang_out_lang == "pl-en")
+	{
+		str += '|' + window.en_words[window.order[window.correct + window.incorrect]] + '|';
+		if(document.getElementById(fieldname).value == window.en_words[window.order[window.correct + window.incorrect]])
 		{
 			console.log("Correct answer \"" + document.getElementById(fieldname).value + "\"");
 			correct_answer = true;
@@ -55,13 +87,20 @@ function checkword(in_lang_out_lang, id, fieldname)
 	if(!correct_answer)
 	{
 		document.getElementById(id).innerHTML = "<font face=\"Cantarell\" size=5 color=red>Zła odpowiedź</font><br><font face=\"Cantarell\" size=5 color=white>Poprawne: <b>";
-		for(var i = 0; i < window.pl_words[window.order[window.correct + window.incorrect]].length; i++)
+		if(in_lang_out_lang == "en-pl")
 		{
-			document.getElementById(id).innerHTML += window.pl_words[window.order[window.correct + window.incorrect]][i];
-			if(i < window.pl_words[window.order[window.correct + window.incorrect]].length - 1)
+			for(var i = 0; i < window.pl_words[window.order[window.correct + window.incorrect]].length; i++)
 			{
-				document.getElementById(id).innerHTML += "</b>, <b>";
+				document.getElementById(id).innerHTML += window.pl_words[window.order[window.correct + window.incorrect]][i];
+				if(i < window.pl_words[window.order[window.correct + window.incorrect]].length - 1)
+				{
+					document.getElementById(id).innerHTML += "</b>, <b>";
+				}
 			}
+		}
+		else if(in_lang_out_lang == "pl-en")
+		{
+			document.getElementById(id).innerHTML += window.en_words[window.order[window.correct + window.incorrect]];
 		}
 		document.getElementById(id).innerHTML += "</b></font><br><button type=\"button\" onclick=\"update_content(\'" + in_lang_out_lang + "\', \'" + id + "\')\">Dalej</button><br>";
 		window.incorrect++;
@@ -99,20 +138,8 @@ function appmain(in_lang_out_lang, id)
 	document.getElementById(id).innerHTML = "<font face=\"Cantarell\" size=3 color=white>Losowe układanie wyrazów...</font>";
 	window.correct = 0; /* Number of correct answers */
 	window.incorrect = 0; /* Number of incorrect answers */
-	window.maxfieldlength = 0;
-	if(in_lang_out_lang == "en-pl")
+	if(in_lang_out_lang == "en-pl" || in_lang_out_lang == "pl-en")
 	{
-		/* Get maximum input field length */
-		for(var i = 0; i < window.en_words.length; i++)
-		{
-			for(var j = 0; j < window.pl_words[i].length; j++)
-			{
-				if(window.pl_words[i][j].length > window.maxfieldlength)
-				{
-					window.maxfieldlength = window.pl_words[i][j].length;
-				}
-			}
-		}
 		/* Generate random indices */
 		window.order = [];
 		while(window.order.length < window.en_words.length)
