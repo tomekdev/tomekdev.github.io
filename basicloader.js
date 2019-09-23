@@ -38,6 +38,8 @@ function parse_config_file(pth, id, go_back)
 	}
 	window.pl_words.length = 0;
 	window.en_words.length = 0;
+	window.de_words.length = 0;
+	window.de_partizip.length = 0;
 	document.getElementById(id).innerHTML = "Wczytywanie...";
 	var file = new XMLHttpRequest();
 	file.open('GET', pth, false);
@@ -226,7 +228,7 @@ function parse_config_file(pth, id, go_back)
 				{
 					returnstr += "<font face=\"Cantarell\" size=5 color=\"white\">Wybierz tryb</font><br>\n" + returnstr;
 					returnstr += "<button type=\"button\" onclick=\"appmain(\'pl-de\', \'contents\')\">[ Polski ---> Partizip ---> Niemiecki ]</button><br>";
-					returnstr += "<button type=\"button\" onclick=\"appmain(\'en-pl\', \'contents\')\">[ Niemiecki ---> Partizip ---> Polski ]</button><br>";
+					returnstr += "<button type=\"button\" onclick=\"appmain(\'de-pl\', \'contents\')\">[ Niemiecki ---> Partizip ---> Polski ]</button><br>";
 					/* DEBUG: print data */
 					var str = "Word definition data:\n";
 					for(var a = 0; a < window.de_words.length; a++)
