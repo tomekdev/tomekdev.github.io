@@ -2,6 +2,10 @@ window.en_words = [];
 window.en_words.length = 0;
 window.pl_words = [];
 window.pl_words.length = 0;
+window.de_words = [];
+window.de_words.length = 0;
+window.de_partizip = [];
+window.de_partizip.length = 0;
 window.config_structure = [];
 window.config_structure_level = -1;
 
@@ -118,40 +122,88 @@ function parse_config_file(pth, id, go_back)
 						}
 						else
 						{
-							var eng = "";
-							var pol = [];
-							/* Line buffer contains word definitions */
-							var k = 0;
-							while(k < line.length && line[k] != '=')
+							if(pth.includes("/irregular_verbs_list"))
 							{
-								eng += line[k];
-								k++;
-							}
-							eng = eng.trim();
-							while(k < line.length && line[k] == ' ') k++;
-							k++;
-							while(k < line.length && line[k] == '=') k++;
-							/* Push english word */
-							window.en_words.push(eng);
-							var pol_word = "";
-							while(k < line.length)
-							{
-								while(line[k] != '/' && k < line.length)
+								console.log("File has irregular verbs definitions");
+								var german = "";
+								var pol_word = "";
+								var partizip = "";
+								var k = 0;
+								while(k < line.length && line[k] != '/')
 								{
-									pol_word += line[k];
+									german += line[k];
 									k++;
 								}
+								german = german.trim();
+								while(k < line.length && line[k] == ' ') k++;
 								k++;
-								pol_word = pol_word.trim();
-								pol.push(pol_word);
-								pol_word = "";
+								while(k < line.length ** line[k] == '/') k++;
+								/* Push german word */
+								window.de_words.push(german);
+								/* Load partizip */
+								while(k < line.length && line[k] != '=')
+								{
+									partizip += line[k];
+									k++;
+								}
+								partizip = partizip.trim();
+								while(k < line.length && line[k] == ' ') k++;
+								k++;
+								while(k < line.length && line[k] == '=') k++;
+								/* Push partizip word */
+								window.de_partizip.push(partizip);
+								var pol = [];
+								while(k < line.length)
+								{
+									while(line[k] != '/' && k < line.length)
+									{
+										pol_word += line[k];
+										k++;
+									}
+									k++;
+									pol_word = pol_word.trim();
+									pol.push(pol_word);
+									pol_word = "";
+								}
+								window.pl_words.push(pol);
 							}
-							window.pl_words.push(pol);
+							else
+							{
+								var eng = "";
+								var pol = [];
+								/* Line buffer contains word definitions */
+								var k = 0;
+								while(k < line.length && line[k] != '=')
+								{
+									eng += line[k];
+									k++;
+								}
+								eng = eng.trim();
+								while(k < line.length && line[k] == ' ') k++;
+								k++;
+								while(k < line.length && line[k] == '=') k++;
+								/* Push english word */
+								window.en_words.push(eng);
+								var pol_word = "";
+								while(k < line.length)
+								{
+									while(line[k] != '/' && k < line.length)
+									{
+										pol_word += line[k];
+										k++;
+									}
+									k++;
+									pol_word = pol_word.trim();
+									pol.push(pol_word);
+									pol_word = "";
+								}
+								window.pl_words.push(pol);
+							}
 						}
 					}
 					line = "";
 				}
-				if(!pth.includes("/config"))
+				if(!pth.includes("/config") && !pth.includes("/irregular_verbs_list"))
 				{
 					returnstr = "<font face=\"Cantarell\" size=5 color=\"white\">Wybierz tryb</font><br>\n" + returnstr;
 					returnstr += "<button type=\"button\" onclick=\"appmain(\'pl-en\', \'contents\')\">[ Polski ---> Angielski ]</button><br>";
@@ -169,6 +221,26 @@ function parse_config_file(pth, id, go_back)
 					}
 					console.log(str);
 					console.log("en_words: " + window.en_words.length + ", pl_words: " + window.pl_words.length);
+				}
+				else if(pth.includes("/irregular_verbs_list"))
+				{
+					returnstr += "<font face=\"Cantarell\" size=5 color=\"white\">Wybierz tryb</font><br>\n" + returnstr;
+					returnstr += "<button type=\"button\" onclick=\"appmain(\'pl-de\', \'contents\')\">[ Polski ---> Partizip ---> Niemiecki ]</button><br>";
+					returnstr += "<button type=\"button\" onclick=\"appmain(\'en-pl\', \'contents\')\">[ Niemiecki ---> Partizip ---> Polski ]</button><br>";
+					/* DEBUG: print data */
+					var str = "Word definition data:\n";
+					for(var a = 0; a < window.de_words.length; a++)
+					{
+						str += "de: " + window.de_words[a] + ", partizip: " + window.de_partizip[a] +  ", pl: ";
+						for(var b = 0; b < window.pl_words[a].length; b++)
+						{
+							str += window.pl_words[a][b] + ", ";
+						}
+						str += '\n';
+					}
+					console.log(str);
+					console.log("de_words: " + window.de_words.length + ", pl_words: " + window.pl_words.length);
+
 				}
 				document.getElementById(id).innerHTML = returnstr;
 			}
