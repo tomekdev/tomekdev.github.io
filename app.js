@@ -80,6 +80,7 @@ function update_content(in_lang_out_lang, id)
 			}
 			placeholder_str = "In deutsche...";
 		}
+		var maxwords = 
 		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.en_words.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button id=\"checkbutton\" type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br>";
 		console.log("number: " + window.order[window.correct + window.incorrect]);
 	}
