@@ -92,6 +92,43 @@ function update_content(in_lang_out_lang, id)
 	document.getElementById(id).innerHTML += "<br><button type=\"button\" onclick=\"parse_config_file(\'" + window.config_structure[window.config_structure_level - 1] + "\', \'" + id + "\', true)\">Wstecz</button><br>";
 }
 
+window.lowercase_letters = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż";
+window.uppercase_letters = "AĄBCĆDEĘFGHIJKLŁMNŃOÓPQRSŚTUVWXYZŹŻ";
+
+function do_checkword_case_insensitive(word, correct_word)
+{
+	/* If correct word starts with uppercase letter it means that it is a special name and that word is incorrect */
+	for(var i = 0; i < window.uppercase_letters.length; i++)
+	{
+		if(correct_word.charAt(0) == window.uppercase_letters.charAt(i))
+		{
+			return false; /* Exit function and return NULL, because the answer is wrong */
+		}
+	}
+	/* Check if the word is correct */
+	var first_letter_index = -1;
+	for(var i = 0; i < window.lowercase_letters.length; i++)
+	{
+		if(correct_word.charAt(0) == window.lowercase_letters.charAt(i))
+		{
+			first_letter_index = i;
+		}
+	}
+	console.log("lowercase letter: " + window.lowercase_letters.charAt(first_letter_index));
+	/* Do the real check */
+	var corrected_word = window.lowercase_letters.charAt(first_letter_index) + word.substr(1, word.length - 1);
+	console.log("corrected word: " + corrected_word);
+
+	if(corrected_word == correct_word)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 function checkword(in_lang_out_lang, id, fieldname)
 {
 	var new_in_lang_out_lang = in_lang_out_lang;
@@ -106,7 +143,7 @@ function checkword(in_lang_out_lang, id, fieldname)
 		for(var i = 0; i < window.pl_words[window.order[window.correct + window.incorrect]].length; i++)
 		{
 			str += '|' + window.pl_words[window.order[window.correct + window.incorrect]][i] + "|, ";
-			if(document.getElementById(fieldname).value == window.pl_words[window.order[window.correct + window.incorrect]][i])
+			if(document.getElementById(fieldname).value == window.pl_words[window.order[window.correct + window.incorrect]][i] || do_checkword_case_insensitive(document.getElementById(fieldname).value, window.pl_words[window.order[window.correct + window.incorrect]][i]))
 			{
 				console.log("Correct answer \"" + document.getElementById(fieldname).value + "\"");
 				correct_answer = true;
@@ -116,7 +153,7 @@ function checkword(in_lang_out_lang, id, fieldname)
 	else if(in_lang_out_lang == "pl-en")
 	{
 		str += '|' + window.en_words[window.order[window.correct + window.incorrect]] + '|';
-		if(document.getElementById(fieldname).value == window.en_words[window.order[window.correct + window.incorrect]])
+		if(document.getElementById(fieldname).value == window.en_words[window.order[window.correct + window.incorrect]] || do_checkword_case_insensitive(document.getElementById(fieldname).value, window.en_words[window.order[window.correct + window.incorrect]]))
 		{
 			console.log("Correct answer \"" + document.getElementById(fieldname).value + "\"");
 			correct_answer = true;
