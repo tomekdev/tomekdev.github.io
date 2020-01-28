@@ -8,6 +8,8 @@ window.de_partizip = [];
 window.de_partizip.length = 0;
 window.config_structure = [];
 window.config_structure_level = -1;
+window.user_created_list = [];
+window.user_created_list.length = 0;
 
 function Load(path, id) {
 	var file = new XMLHttpRequest();
@@ -40,6 +42,7 @@ function parse_config_file(pth, id, go_back)
 	window.en_words.length = 0;
 	window.de_words.length = 0;
 	window.de_partizip.length = 0;
+	window.user_created_list.length = 0;
 	document.getElementById(id).innerHTML = "Wczytywanie...";
 	var file = new XMLHttpRequest();
 	file.open('GET', pth, false);

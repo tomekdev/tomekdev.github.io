@@ -1,3 +1,5 @@
+window.user_created_list = [];
+
 var polish_translation = function()
 {
 	this.translations = [];
@@ -22,10 +24,34 @@ function btn_nullfunc()
 {
 }
 
+function add_to_user_wordlist(index, in_lang_out_lang)
+{
+	console.log("Adding index " + index + " user list. Lang: " + in_lang_out_lang);
+	var found = 0;
+	for(var i = 0; i < window.user_created_list.length; i++)
+	{
+		if(window.user_created_list[i] == index)
+			found = 1;
+	}
+	if(found == 0)
+	{
+		console.log("index added");
+		window.user_created_list.push(index);
+	}
+}
+
+function reset_counters(in_lang_out_lang, id)
+{
+	window.incorrect = 0;
+	window.correct = 0;
+	window.order = window.user_created_list;
+	update_content(in_lang_out_lang, id);
+}
+
 function update_content(in_lang_out_lang, id)
 {
 	console.log("in_lang_out_lang: " + in_lang_out_lang);
-	if(window.correct + window.incorrect < window.pl_words.length)
+	if(window.correct + window.incorrect < window.order.length)
 	{
 		var placeholder_str = "";
 		var word_str = "";
@@ -81,12 +107,13 @@ function update_content(in_lang_out_lang, id)
 			placeholder_str = "In deutsche...";
 		}
 		var maxwords = 
-		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.en_words.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button id=\"checkbutton\" type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br>";
+		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.order.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><button type=\"button\" id=\"add_btn\" onclick=\"add_to_user_wordlist(\'" + window.order[window.incorrect + window.correct] + "\', \'" + in_lang_out_lang + "\')\">[ NA LISTĘ ]</button> <input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button id=\"checkbutton\" type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br><button type=\"button\" id=\"goto_list\" onclick=\"reset_counters(\'" + in_lang_out_lang + "\', \'" + id + "\')\">Przejdź do listy</button>";
 		console.log("number: " + window.order[window.correct + window.incorrect]);
 	}
 	else
 	{
-		document.getElementById(id).innerHTML = "<font color=white face=\"Cantarell\" size=7>Twój wynik</font><br><font color=green size=5>" + window.correct + "</font><font color=white size=5> poprawnych, </font><font color=red size=5>" + window.incorrect + "</font><font color=white size=5> niepoprawnych na " + window.en_words.length + " możliwych (" + Math.round((window.correct / window.en_words.length * 100)) + " %).<br>";
+		document.getElementById(id).innerHTML = "<font color=white face=\"Cantarell\" size=7>Twój wynik</font><br><font color=green size=5>" + window.correct + "</font><font color=white size=5> poprawnych, </font><font color=red size=5>" + window.incorrect + "</font><font color=white size=5> niepoprawnych na " + window.order.length + " możliwych (" + Math.round((window.correct / window.en_words.length * 100)) + " %).<br>";
+		window.user_created_list.length = 0;
 	}
 	/* Add "Back" button */
 	document.getElementById(id).innerHTML += "<br><button type=\"button\" onclick=\"parse_config_file(\'" + window.config_structure[window.config_structure_level - 1] + "\', \'" + id + "\', true)\">Wstecz</button><br>";
