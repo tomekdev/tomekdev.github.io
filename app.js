@@ -44,7 +44,10 @@ function reset_counters(in_lang_out_lang, id)
 {
 	window.incorrect = 0;
 	window.correct = 0;
-	window.order = window.user_created_list;
+	window.order.length = 0;
+	for(var i = 0; i < window.user_created_list.length; i++)
+		window.order.push(window.user_created_list[i]);
+	window.user_created_list.length = 0;
 	update_content(in_lang_out_lang, id);
 }
 
@@ -107,16 +110,14 @@ function update_content(in_lang_out_lang, id)
 			placeholder_str = "In deutsche...";
 		}
 		var maxwords = 
-		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.order.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><button type=\"button\" id=\"add_btn\" onclick=\"add_to_user_wordlist(\'" + window.order[window.incorrect + window.correct] + "\', \'" + in_lang_out_lang + "\')\">[ NA LISTĘ ]</button> <input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button id=\"checkbutton\" type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br><button type=\"button\" id=\"goto_list\" onclick=\"reset_counters(\'" + in_lang_out_lang + "\', \'" + id + "\')\">Przejdź do listy</button>";
+		document.getElementById(id).innerHTML = "<font color=green>" + window.correct + "</font><font color=white> poprawnych, </font><font color=red>" + window.incorrect + "</font><font color=white> niepoprawnych na " + window.order.length + " możliwych.<br><font size=5 color=white face=\"Cantarell\">" + word_str + "</font><br><button type=\"button\" id=\"add_btn\" onclick=\"add_to_user_wordlist(\'" + window.order[window.incorrect + window.correct] + "\', \'" + in_lang_out_lang + "\')\">[ NA LISTĘ ]</button> <input type=\"text\" name=\"answer\" id=\"answer\" placeholder=\"" + placeholder_str + "\" autofocus>\n<button id=\"checkbutton\" type=\"button\" onclick=\"checkword(\'" + in_lang_out_lang + "\', \'" + id + "\', \'answer\')\">Sprawdź</button><br>";
 		console.log("number: " + window.order[window.correct + window.incorrect]);
 	}
 	else
-	{
 		document.getElementById(id).innerHTML = "<font color=white face=\"Cantarell\" size=7>Twój wynik</font><br><font color=green size=5>" + window.correct + "</font><font color=white size=5> poprawnych, </font><font color=red size=5>" + window.incorrect + "</font><font color=white size=5> niepoprawnych na " + window.order.length + " możliwych (" + Math.round((window.correct / window.en_words.length * 100)) + " %).<br>";
-		window.user_created_list.length = 0;
-	}
+
 	/* Add "Back" button */
-	document.getElementById(id).innerHTML += "<br><button type=\"button\" onclick=\"parse_config_file(\'" + window.config_structure[window.config_structure_level - 1] + "\', \'" + id + "\', true)\">Wstecz</button><br>";
+	document.getElementById(id).innerHTML += "<br><button type=\"button\" id=\"goto_list\" onclick=\"reset_counters(\'" + in_lang_out_lang + "\', \'" + id + "\')\">Przejdź do listy</button> <button type=\"button\" onclick=\"parse_config_file(\'" + window.config_structure[window.config_structure_level - 1] + "\', \'" + id + "\', true)\">Wstecz</button><br>";
 }
 
 window.lowercase_letters = "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż";
