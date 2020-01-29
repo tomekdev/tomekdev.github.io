@@ -267,7 +267,7 @@ function checkword(in_lang_out_lang, id, fieldname)
 		{
 			document.getElementById(id).innerHTML += window.de_words[window.order[window.correct + window.incorrect]];
 		}
-		document.getElementById(id).innerHTML += "</b></font><br><button type=\"button\" onclick=\"update_content(\'" + new_in_lang_out_lang + "\', \'" + id + "\')\">Dalej</button><br>";
+		document.getElementById(id).innerHTML += "</b></font><br><button type=\"button\" id=\"add_btn\" onclick=\"add_to_user_wordlist(\'" + window.order[window.incorrect + window.correct] + "\', \'" + in_lang_out_lang + "\')\">[ NA LISTĘ ]</button> <button type=\"button\" onclick=\"update_content(\'" + new_in_lang_out_lang + "\', \'" + id + "\')\">Dalej</button><br>";
 		window.incorrect++;
 	}
 	else
