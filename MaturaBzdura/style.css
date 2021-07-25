@@ -1,0 +1,84 @@
+html {
+  min-height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  background-image: url("data/background_normal.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  color: whitesmoke;
+  padding: 0px;
+  margin: 0px;
+}
+
+div#main_title_normal {
+  width: 100%;
+  text-align: center;
+  font-family: "Sans";
+  font-size: larger;
+  color: whitesmoke;
+}
+
+div#app_main_mobile {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  font-size: 4vw;
+}
+
+div#main_title_mobile {
+  text-align: center;
+  font-family: "Sans";
+  color: whitesmoke;
+}
+
+h2#h2_mobile {
+  font-size: 6vw;
+  color: whitesmoke;
+}
+
+input#book_button {
+  background-image: linear-gradient(to bottom right, red, yellow);
+  width: 90%;
+  font-size: 6vw;
+  margin: 1vh;
+  border-radius: 3vw;
+  color: white;
+  text-shadow: 1px 1px 5px red;
+  min-height: 7vh;
+}
+
+input#book_button:hover {
+  background-image: linear-gradient(to bottom right, blue, yellow);
+}
+
+div#question_field {
+  position: relative;
+  margin: 2vh;
+  padding: 2vh;
+  background-image: linear-gradient(to bottom right, white, grey);
+  text-shadow: 2px 2px 5px darkgreen;
+  border-radius: 20px;
+}
+
+div#answers_box {
+  text-shadow: 2px 2px 5px blue;
+}
+
+#checkbutton {
+  background-image: linear-gradient(to bottom right, red, yellow);
+  width: 90%;
+  font-size: 6vw;
+  margin: 1vh;
+  border-radius: 3vw;
+  color: white;
+  text-shadow: 1px 1px 5px red;
+  min-height: 7vh;  
+}
