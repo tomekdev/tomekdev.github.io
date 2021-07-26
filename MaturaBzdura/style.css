@@ -59,7 +59,7 @@ input#book_button:hover {
   background-image: linear-gradient(to bottom right, blue, yellow);
 }
 
-div#question_field {
+.question_field {
   position: relative;
   margin: 2vh;
   padding: 2vh;

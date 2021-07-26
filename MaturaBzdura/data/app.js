@@ -49,7 +49,7 @@ function show_questions()
 		randomize_answers_order(window.questions[window.questions_order[i]]);
 		if(i == 0)
 			handle.innerHTML = "";
-		var page_fragment = "<div id=\"question_field\">";
+		var page_fragment = `<div id=\"question_field_${window.questions_order[i]}\" class=\"question_field\"\">`;
 		page_fragment += "<div id=\"question_box\">";
 		page_fragment += `${i + 1}. `;
 		page_fragment += window.questions[window.questions_order[i]].question.substr(2);
@@ -73,6 +73,7 @@ function show_questions()
 		handle.innerHTML += page_fragment;
 	}
 	handle.innerHTML += "<br><center><input type=\"button\" id=\"checkbutton\" value=\"Sprawdź\" onclick=\"check_answers()\"></center>";
+	handle.innerHTML += "<br><div id=results></div>";
 }
 
 window.once_again_questions_list = [];
@@ -82,18 +83,27 @@ function check_answers()
 {
 	for(var i = 0; i < window.questions.length; i++)
 	{
+		var handle = document.getElementById(`question_field_${i}`);
 		if(window.questions[i].type == "radio")
 		{
 			//console.log(`question: ${window.questions[i].question}`);
 			//console.log(`correct answer: ${window.questions[i].answers[window.questions[i].correct_answers_indices[0]]}`);
 			var radios = document.getElementsByName(`question_${i}`);
+			var scored = false;
 			for(var j = 0; j < radios.length; j++)
 			{
 				if(radios[j].checked && radios[j].value == window.questions[i].correct_answers_indices[0])
 				{
 					//console.log(`scored answer: ${window.questions[i].answers[j]}`);
 					window.score++;
+					scored = true;
 				}
+			}
+			if(!scored)
+				handle.style.backgroundImage = "linear-gradient(to bottom right, white, red)";
+			else
+			{
+				handle.style.backgroundImage = "linear-gradient(to bottom right, white, green)";			
 			}
 		}
 		if(window.questions[i].type == "checkbox")
@@ -104,7 +114,6 @@ function check_answers()
 				var checkbox = document.getElementById(`question_${i}_${j}`);
 				if(checkbox.checked)
 				{
-					console.log
 					if(window.questions[i].correct_answers_indices.find(function(x) {return x == j }) != undefined)
 						points_scored++;
 					else
@@ -113,9 +122,25 @@ function check_answers()
 						break;
 					}
 				}
+				else
+				{
+					if(window.questions[i].correct_answers_indices.find(function(x) {return x == j }) != undefined)
+					{
+						points_scored = 0;
+						break;
+					}
+				}
 			}
+			
+			if(points_scored > 0)
+				handle.style.backgroundImage = "linear-gradient(to bottom right, white, green)";			
+			else
+				handle.style.backgroundImage = "linear-gradient(to bottom right, white, red)";			
+
 			window.score += points_scored;
 		}
 	}
+	document.getElementById("results").innerHTML = `<div class=\"question_field\">Punktów: <span style=\"color: green\">${window.score}</span> z <span style=\"color: red\">${window.max_score}</span></div>`;
 	console.log(`Got ${window.score} score out of ${window.max_score}`);
+	window.score = 0;
 }
