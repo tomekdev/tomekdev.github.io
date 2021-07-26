@@ -18,10 +18,7 @@ function randomize_questions_order()
 	{
 		var x = Math.floor(Math.random() * coefficient) % window.questions.length;
 		if(window.questions_order.find(function(z) { return x == z }) == undefined)
-		{
-			console.log(`pushing ${x}`);
 			window.questions_order.push(x);
-		}
 	}
 }
 
@@ -49,7 +46,7 @@ function show_questions()
 	randomize_questions_order();
 	for(var i = 0; i < window.questions_order.length; i++)
 	{
-		randomize_answers_order(window.questions[i]);
+		randomize_answers_order(window.questions[window.questions_order[i]]);
 		if(i == 0)
 			handle.innerHTML = "";
 		var page_fragment = "<div id=\"question_field\">";
@@ -57,17 +54,18 @@ function show_questions()
 		page_fragment += `${i + 1}. `;
 		page_fragment += window.questions[window.questions_order[i]].question.substr(2);
 		page_fragment += "<br>\n</div>\n<div id=\"answers_box\">";
+		var q = window.questions[window.questions_order[i]];
 		for(var j = 0; j < window.questions[window.questions_order[i]].randomized_answers_order.length; j++)
 		{
-			if(window.questions[window.questions_order[i]].question.substr(0, 2) == "1:")
+			if(q.question.substr(0, 2) == "1:")
 			{
-				page_fragment += `<input type=\"radio\" value=\"${j}\" name=\"question_${i}\">`;
-				page_fragment += window.questions[window.questions_order[i]].answers[window.questions[window.questions_order[i]].randomized_answers_order[j]];
+				page_fragment += `<input type=\"radio\" value=\"${q.randomized_answers_order[j]}\" name=\"question_${window.questions_order[i]}\">`;
+				page_fragment += q.answers[q.randomized_answers_order[j]];
 			}
-			if(window.questions[i].question.substr(0, 2) == "2:")
+			if(q.question.substr(0, 2) == "2:")
 			{
-				page_fragment += `<input type=\"checkbox\" id=\"question_${i}_${j}\">`;
-				page_fragment += window.questions[window.questions_order[i]].answers[window.questions[window.questions_order[i]].randomized_answers_order[j]];
+				page_fragment += `<input type=\"checkbox\" id=\"question_${window.questions_order[i]}_${q.randomized_answers_order[j]}\">`;
+				page_fragment += q.answers[q.randomized_answers_order[j]];
 			}
 			page_fragment += "<br>";
 		}
@@ -86,6 +84,8 @@ function check_answers()
 	{
 		if(window.questions[i].type == "radio")
 		{
+			console.log(`question: ${window.questions[i].question}`);
+			console.log(`correct answer: ${window.questions[i].answers[window.questions[i].correct_answers_indices[0]]}`);
 			var radios = document.getElementsByName(`question_${i}`);
 			for(var j = 0; j < radios.length; j++)
 			{
