@@ -38,8 +38,8 @@ function load_booklist_callback(response)
 
 function load_booklist()
 {
-	fetch_file("/tomekdev.github.io/MaturaBzdura/data/files/booklist", load_booklist_callback);
-	//fetch_file("/MaturaBzdura/data/files/booklist", load_booklist_callback);
+	//fetch_file("/tomekdev.github.io/MaturaBzdura/data/files/booklist", load_booklist_callback);
+	fetch_file("/MaturaBzdura/data/files/booklist", load_booklist_callback);
 }
 
 var Question = function() {
