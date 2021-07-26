@@ -84,13 +84,16 @@ function check_answers()
 	{
 		if(window.questions[i].type == "radio")
 		{
-			console.log(`question: ${window.questions[i].question}`);
-			console.log(`correct answer: ${window.questions[i].answers[window.questions[i].correct_answers_indices[0]]}`);
+			//console.log(`question: ${window.questions[i].question}`);
+			//console.log(`correct answer: ${window.questions[i].answers[window.questions[i].correct_answers_indices[0]]}`);
 			var radios = document.getElementsByName(`question_${i}`);
 			for(var j = 0; j < radios.length; j++)
 			{
-				if(radios[j].checked && j == window.questions[i].correct_answers_indices[0])
+				if(radios[j].checked && radios[j].value == window.questions[i].correct_answers_indices[0])
+				{
+					//console.log(`scored answer: ${window.questions[i].answers[j]}`);
 					window.score++;
+				}
 			}
 		}
 		if(window.questions[i].type == "checkbox")
@@ -101,6 +104,7 @@ function check_answers()
 				var checkbox = document.getElementById(`question_${i}_${j}`);
 				if(checkbox.checked)
 				{
+					console.log
 					if(window.questions[i].correct_answers_indices.find(function(x) {return x == j }) != undefined)
 						points_scored++;
 					else
