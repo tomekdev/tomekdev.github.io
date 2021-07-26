@@ -60,12 +60,18 @@ function show_questions()
 			if(q.question.substr(0, 2) == "1:")
 			{
 				page_fragment += `<input type=\"radio\" value=\"${q.randomized_answers_order[j]}\" name=\"question_${window.questions_order[i]}\">`;
-				page_fragment += q.answers[q.randomized_answers_order[j]];
+				if(q.answers[q.randomized_answers_order[j]].substr(0, 1) == '=')
+					page_fragment += q.answers[q.randomized_answers_order[j]].substr(1);
+				else
+					page_fragment += q.answers[q.randomized_answers_order[j]];
 			}
 			if(q.question.substr(0, 2) == "2:")
 			{
 				page_fragment += `<input type=\"checkbox\" id=\"question_${window.questions_order[i]}_${q.randomized_answers_order[j]}\">`;
-				page_fragment += q.answers[q.randomized_answers_order[j]];
+				if(q.answers[q.randomized_answers_order[j]].substr(0, 1) == '=')
+					page_fragment += q.answers[q.randomized_answers_order[j]].substr(1);
+				else
+					page_fragment += q.answers[q.randomized_answers_order[j]];
 			}
 			page_fragment += "<br>";
 		}
