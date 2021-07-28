@@ -40,9 +40,40 @@ function randomize_answers_order(question)
 	}
 }
 
+window.once_again_questions_list = [];
+
+function swap_question_lists_and_cleanup()
+{
+	if(window.once_again_questions_list.length > 0)
+	{
+		console.log("Swapping variables");
+		window.questions = [...window.once_again_questions_list];
+		window.questions_order.length = 0;
+		for(var i = 0; i < window.questions.length; i++)
+			window.questions[i].randomized_answers_order.length = 0;
+		window.once_again_questions_list.length = 0;
+		window.failed_indices_list.length = 0;
+		console.log(`questions count: ${window.questions.length}`);
+	}
+}
+
+function restore_failed_question_backgrounds()
+{
+	for(var i = 0; i < window.failed_indices_list.length; i++)
+	{
+		var handle = document.getElementById(`question_field_${window.failed_indices_list[i]}`);
+		console.log(`restoring background for question_field_${window.failed_indices_list[i]}`);
+		handle.style.backgroundImage = "linear-gradient(to bottom right, white, grey)";
+	}
+}
+
 function show_questions()
 {
+	console.log(`show_questions(): once agains questions: ${window.once_again_questions_list.length}`);
+	restore_failed_question_backgrounds();
+	swap_question_lists_and_cleanup();
 	var handle = document.getElementById("app_main_mobile");
+	handle.innerHTML = "";
 	randomize_questions_order();
 	for(var i = 0; i < window.questions_order.length; i++)
 	{
@@ -82,11 +113,14 @@ function show_questions()
 	handle.innerHTML += "<br><div id=results></div>";
 }
 
-window.once_again_questions_list = [];
 window.score = 0;
+window.failed_indices_list = [];
 
 function check_answers()
 {
+	/* Clear list of once again questions */
+	window.once_again_questions_list.length = 0;
+ 
 	for(var i = 0; i < window.questions.length; i++)
 	{
 		var handle = document.getElementById(`question_field_${i}`);
@@ -106,7 +140,11 @@ function check_answers()
 				}
 			}
 			if(!scored)
+			{
 				handle.style.backgroundImage = "linear-gradient(to bottom right, white, red)";
+				window.once_again_questions_list.push(window.questions[i]);
+				window.failed_indices_list.push(i);
+			}
 			else
 			{
 				handle.style.backgroundImage = "linear-gradient(to bottom right, white, green)";			
@@ -125,6 +163,8 @@ function check_answers()
 					else
 					{
 						points_scored = 0;
+						window.once_again_questions_list.push(window.questions[i]);
+						window.failed_indices_list.push(i);
 						break;
 					}
 				}
@@ -132,7 +172,9 @@ function check_answers()
 				{
 					if(window.questions[i].correct_answers_indices.find(function(x) {return x == j }) != undefined)
 					{
+						window.once_again_questions_list.push(window.questions[i]);
 						points_scored = 0;
+						window.failed_indices_list.push(i);
 						break;
 					}
 				}
@@ -149,4 +191,7 @@ function check_answers()
 	document.getElementById("results").innerHTML = `<div class=\"question_field\">Punktów: <span style=\"color: green\">${window.score}</span> z <span style=\"color: red\">${window.max_score}</span></div>`;
 	console.log(`Got ${window.score} score out of ${window.max_score}`);
 	window.score = 0;
+	document.getElementById("checkbutton").value = "Jeszcze raz";
+	document.getElementById("checkbutton").onclick = show_questions;
+	console.log(`Once again questions: ${window.once_again_questions_list.length}`);	
 }
