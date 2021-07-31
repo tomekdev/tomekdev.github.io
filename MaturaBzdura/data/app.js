@@ -190,8 +190,9 @@ function check_answers()
 	}
 	document.getElementById("results").innerHTML = `<div class=\"question_field\">Punktów: <span style=\"color: green\">${window.score}</span> z <span style=\"color: red\">${window.max_score}</span></div>`;
 	console.log(`Got ${window.score} score out of ${window.max_score}`);
-	window.score = 0;
 	document.getElementById("checkbutton").value = "Jeszcze raz";
 	document.getElementById("checkbutton").onclick = show_questions;
+	window.max_score -= window.score;
+	window.score = 0;
 	console.log(`Once again questions: ${window.once_again_questions_list.length}`);	
 }
