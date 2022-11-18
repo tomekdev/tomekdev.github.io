@@ -16,7 +16,7 @@ brass = mosiądz
 brittle = kruchy
 bronze = brąz
 bullet-resistant armour = ubranie kuloodporne
-burr - rąbek/ząbek
+burr = rąbek/ząbek
 cement = cement
 ceramics = materiały ceramiczne
 chassis = podwozie
@@ -115,8 +115,7 @@ seal = uszczelka
 sealing gasket = uszczelka
 shock-resistance = odporność na wstrząsy
 snap = pęknąć/puścić
-softwood = drewno miękkie (z drzew
-iglastych)
+softwood = drewno miękkie (z drzew iglastych)
 sort = sortować
 stainless steel = stal nierdzewna
 steel bar = pręt stalowy
